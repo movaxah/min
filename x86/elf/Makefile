@@ -1,4 +1,8 @@
-all : gcc-return1-object gcc-return1 gcc-stripped-return1 nasm-return1-object nasm-return1 nasm-stripped-return1 nasm-manualheaders-return1
+all : binfolders gcc-return1-object gcc-return1 gcc-stripped-return1 nasm-return1-object nasm-return1 nasm-stripped-return1 nasm-manualheaders-return1
+
+binfolders :
+	mkdir -p bin/executables
+	mkdir -p bin/objects
 
 #-
 gcc-return1-object : src/c/return1.c
@@ -15,19 +19,18 @@ gcc-stripped-return1 : src/c/return1.c
 nasm-return1-object : src/asm/nasm-return1.s
 	nasm -o bin/objects/nasm-return1.o -f elf src/asm/nasm-return1.s
 
-nasm-return1 : 
+nasm-return1 : src/asm/nasm-return1.s
 	ld -o bin/executables/nasm-return1 -nostdlib -m elf_i386 bin/objects/nasm-return1.o
 
-nasm-stripped-return1 : 
+nasm-stripped-return1 : src/asm/nasm-return1.s
 	ld -o bin/executables/nasm-stripped-return1 -nostdlib -s -m elf_i386 bin/objects/nasm-return1.o
 #-
 
 #-manual-headers-
-nasm-manualheaders-return1 :
+nasm-manualheaders-return1 : src/asm/nasm-manualheaders-return1.s
 	nasm -o bin/executables/nasm-manualheaders-return1 -f bin src/asm/nasm-manualheaders-return1.s
 	chmod +x bin/executables/nasm-manualheaders-return1
 #-
-
 
 .PHONY : clean show
 
